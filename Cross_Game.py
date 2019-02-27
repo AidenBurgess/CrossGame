@@ -128,8 +128,7 @@ class Game:
                         return False
 
     def win_game(self):
-        slime_0 = game_object.NPC(
-            'NPC/Slime.png', random.randrange(20, 700), 500, 50, 50)
+        slime_0 = game_object.NPC(random.randrange(20, 700), 500, 50, 50)
         while True:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -161,11 +160,10 @@ class Game:
         clock.tick(1)
 
     def game_restart(self):
-        slime_0 = game_object.NPC(
-            'NPC/Slime.png', random.randrange(20, 700), 500, 50, 50)
+        slime_0 = game_object.NPC(random.randrange(20, 700), 500, 50, 50)
         while True:
             for event in pygame.event.get():
-                if event.type == pygame.QUIT or (event.type == pygame.KEYDOWN \
+                if event.type == pygame.QUIT or (event.type == pygame.KEYDOWN
                 and (event.key == pygame.K_q or event.key == pygame.K_ESCAPE)):
                     return False
                 elif event.type == pygame.KEYDOWN and event.key == pygame.K_r:
@@ -237,16 +235,10 @@ class Game:
             player.draw(self.game_screen, dir_x, dir_y)
             # Render boost effects
             if boost > 1:
-                object_image = pygame.image.load(
-                    'particle/Particle' + str(count // 6 + 1) + '.png')
-                particle.image = pygame.transform.scale(
-                    object_image, (particle.width, particle.height))
+                particle.next_sprite()
                 # Offset the particle to be roughly mid-body
                 particle.x_pos = player.x_pos + 3
                 particle.y_pos = player.y_pos + 30
-                count += 1
-                if count == 60:
-                    count = 1
                 particle.draw(self.game_screen)
             # Display level counter in corner
             message_to_screen_left(
