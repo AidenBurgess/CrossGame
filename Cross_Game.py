@@ -5,6 +5,8 @@
 
 import pygame
 import random
+import game_object
+
 
 # Screen properties
 SCREEN_TITLE = 'Cross x Crime'
@@ -30,9 +32,9 @@ def text_objects(text, color, text_font):
     return textSurface, textSurface.get_rect()
 
 
-def message_to_screen_center(surface, msg, color, text_font, x, y):
+def message_to_screen_center(surface, msg, color, text_font,y):
     textSurf, textRect = text_objects(msg, color, text_font)
-    textRect.center = x, y
+    textRect.center = SCREEN_WIDTH / 2, y
     surface.blit(textSurf, textRect)
 
 
@@ -61,7 +63,7 @@ class Game:
         self.image = pygame.transform.scale(background_image, (width, height))
 
     def start_game(self):
-        slime_0 = NonPlayerCharacter(
+        slime_0 = game_object.NPC(
             'NPC/Slime.png', random.randrange(20, 700), 500, 50, 50)
         while True:
             for event in pygame.event.get():
@@ -105,14 +107,14 @@ class Game:
         # image = image.convert_alpha()
         self.game_screen.blit(image, (0, 0))
         # Render text
-        message_to_screen_left(
-            self.game_screen, 'You have paused', RED, large_font, 100, 50)
-        message_to_screen_left(
-            self.game_screen, 'Press X to continue', WHITE, large_font, 150, 200)
-        message_to_screen_left(
-            self.game_screen, 'Press Q or esc to return', WHITE, large_font, 80, 330)
-        message_to_screen_left(
-            self.game_screen, 'to Main Menu', WHITE, large_font, 200, 380)
+        message_to_screen_center(
+            self.game_screen, 'You have paused', RED, large_font, 50)
+        message_to_screen_center(
+            self.game_screen, 'Press X to continue', WHITE, large_font, 200)
+        message_to_screen_center(
+            self.game_screen, 'Press Q or esc to return', WHITE, large_font, 330)
+        message_to_screen_center(
+            self.game_screen, 'to Main Menu', WHITE, large_font, 380)
         # Update screen
         pygame.display.update()
         # Pause options checking
@@ -127,7 +129,7 @@ class Game:
                         return False
 
     def win_game(self):
-        slime_0 = NonPlayerCharacter(
+        slime_0 = game_object.NPC(
             'NPC/Slime.png', random.randrange(20, 700), 500, 50, 50)
         while True:
             for event in pygame.event.get():
@@ -160,7 +162,7 @@ class Game:
         clock.tick(1)
 
     def game_restart(self):
-        slime_0 = NonPlayerCharacter(
+        slime_0 = game_object.NPC(
             'NPC/Slime.png', random.randrange(20, 700), 500, 50, 50)
         while True:
             for event in pygame.event.get():
@@ -169,10 +171,10 @@ class Game:
                     return False
                 elif event.type == pygame.KEYDOWN and event.key == pygame.K_r:
                     return True
-            # Display text for losers
+            # Display text for losing
             self.game_screen.fill(WHITE)
             message_to_screen_left(
-                self.game_screen, 'You lost my easy ass game', RED, large_font, 100, 50)
+                self.game_screen, 'You lost...', RED, large_font, 100, 50)
             message_to_screen_left(
                 self.game_screen, 'Press R to Restart', RED, large_font, 150, 200)
             message_to_screen_left(
@@ -192,22 +194,21 @@ class Game:
         print('LEVEL: ', level)
 
         # Draw player + first slime+ treasure
-        particle = GameObject(
+        particle = game_object.GameObject(
             'particle/Particle1.png', 500, 500, 50, 50)
         count = 1
-        player = PlayerCharacter(
+        player = game_object.PC(
             'PC/Zelda.png', self.width / 2 - 25, self.height * 0.85, 50, 70)
-        slime_0 = NonPlayerCharacter(
-            'NPC/Slime.png', random.randrange(20, 300), 500, 50, 50)
+        slime_0 = game_object.NPC('NPC/Slime.png', random.randrange(20, 300), 500, 50, 50)
         slime_0.BASE_SPEED *= level
-        treasure = GameObject('NPC/Treasure.png', self.width / 2 - 45, 30, 100, 70)
+        treasure = game_object.GameObject('NPC/Treasure.png', self.width / 2 - 45, 30, 100, 70)
         # Draw harder slimes
         if level > self.MEDIUM_LEVEL:
-            slime_1 = NonPlayerCharacter(
+            slime_1 = game_object.NPC(
                 'NPC/Slime.png', random.randrange(20, 700), 300, 50, 50)
             slime_1.BASE_SPEED *= level
         if level > self.HARD_LEVEL:
-            slime_2 = NonPlayerCharacter(
+            slime_2 = game_object.NPC(
                 'NPC/Slime.png', random.randrange(20, 700), 150, 50, 50)
             slime_2.BASE_SPEED *= level
             slime_2.move(self.width)
@@ -316,119 +317,10 @@ class Game:
 
         if player.detect_collision(treasure):
             message_to_screen_center(self.game_screen, 'Next Up, Level ' + str(
-                int(level * 2)), WHITE, large_font, self.width / 2, self.height / 2)
+                int(level * 2)), WHITE, large_font, self.height / 2)
             pygame.display.update()
             clock.tick(1)
             return 'treasure'
-
-
-class GameObject:
-
-    def __init__(self, image_path, x, y, width, height):
-        # Load images and scaleup
-        object_image = pygame.image.load(image_path)
-        self.image = pygame.transform.scale(object_image, (width, height))
-        self.x_pos = x
-        self.y_pos = y
-        self.width = width
-        self.height = height
-
-    def draw(self, background):
-        background.blit(self.image, (self.x_pos, self.y_pos))
-
-
-class PlayerCharacter(GameObject):
-
-    BASE_SPEED = 5
-
-    object_image = pygame.image.load('PC/ZeldaFront.png')
-    prev_sprite = pygame.transform.scale(object_image, (50, 70))
-
-    def __init__(self, image_path, x, y, width, height):
-        super().__init__(image_path, x, y, width, height)
-        # Load in all the sprites
-        object_image = pygame.image.load(image_path)
-        self.fr_image = pygame.transform.scale(object_image, (width, height))
-        object_image = pygame.image.load('PC/ZeldaFront.png')
-        self.ba_image = pygame.transform.scale(object_image, (width, height))
-        object_image = pygame.image.load('PC/ZeldaLeft.png')
-        self.le_image = pygame.transform.scale(object_image, (width, height))
-        object_image = pygame.image.load('PC/ZeldaRight.png')
-        self.ri_image = pygame.transform.scale(object_image, (width, height))
-
-    # Special drawing based on sprite movement
-    def draw(self, background, dir_x, dir_y):
-        if dir_y > 0:
-            background.blit(self.fr_image, (self.x_pos, self.y_pos))
-            self.prev_sprite = self.fr_image
-        elif dir_y < 0:
-            background.blit(self.ba_image, (self.x_pos, self.y_pos))
-            self.prev_sprite = self.ba_image
-        elif dir_x > 0:
-            background.blit(self.ri_image, (self.x_pos, self.y_pos))
-            self.prev_sprite = self.ri_image
-        elif dir_x < 0:
-            background.blit(self.le_image, (self.x_pos, self.y_pos))
-            self.prev_sprite = self.le_image
-        else:
-            background.blit(self.prev_sprite, (self.x_pos, self.y_pos))
-
-    # Move character method
-    def move(self, dir_x, dir_y, max_width, max_height, boost):
-        MOVE_BY = self.BASE_SPEED
-        # Moving diagonally should be 1/sqrt(2)
-        if dir_x != 0 and dir_y != 0:
-            MOVE_BY *= 0.707
-        # Calculate how much to move by
-        MOVE_BY *= boost
-        # Define X and Y  movement
-        self.y_pos += MOVE_BY * -dir_y
-        self.x_pos += MOVE_BY * dir_x
-        # Boundary detection
-        if self.y_pos > max_height - self.height:
-            self.y_pos = max_height - self.height
-        elif self.y_pos < 0:
-            self.y_pos = 0
-        if self.x_pos > max_width - self.width:
-            self.x_pos = max_width - self.width
-        elif self.x_pos < 0:
-            self.x_pos = 0
-
-    def detect_collision(self, other_body):
-        if self.y_pos > other_body.y_pos + other_body.height - self.height / 2:
-            return False
-        elif self.y_pos + self.height < other_body.y_pos:
-            return False
-        if self.x_pos > other_body.x_pos + other_body.width:
-            return False
-        elif self.x_pos + self.width < other_body.x_pos:
-            return False
-        return True
-
-
-class NonPlayerCharacter(GameObject):
-    BASE_SPEED = 3
-    # True  = right, False = Left
-    direction = True
-
-    def __init__(self, image_path, x, y, width, height):
-        super().__init__(image_path, x, y, width, height)
-
-    def draw(self, background):
-        if self.direction:
-            background.blit(self.image, (self.x_pos, self.y_pos))
-        else:
-            background.blit(pygame.transform.flip(
-                self.image, 1, 0), (self.x_pos, self.y_pos))
-    # Move character method - moves left to right across the screen
-
-    def move(self, max_width,):
-        if self.x_pos <= 10:
-            self.BASE_SPEED = abs(self.BASE_SPEED)
-        elif self.x_pos >= (max_width - 25):
-            self.BASE_SPEED = -abs(self.BASE_SPEED)
-        self.x_pos += self.BASE_SPEED
-        self.direction = self.BASE_SPEED < 0
 
 
 # Start the game up
