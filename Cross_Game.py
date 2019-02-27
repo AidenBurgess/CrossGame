@@ -63,8 +63,7 @@ class Game:
         self.image = pygame.transform.scale(background_image, (width, height))
 
     def start_game(self):
-        slime_0 = game_object.NPC(
-            'NPC/Slime.png', random.randrange(20, 700), 500, 50, 50)
+        slime_0 = game_object.NPC(random.randrange(20, 700), 500, 50, 50)
         while True:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -196,19 +195,17 @@ class Game:
         particle = game_object.GameObject(
             'particle/Particle1.png', 500, 500, 50, 50)
         count = 1
-        player = game_object.PC(
-            'PC/Zelda.png', self.width / 2 - 25, self.height * 0.85, 50, 70)
-        slime_0 = game_object.NPC('NPC/Slime.png', random.randrange(20, 300), 500, 50, 50)
+        player = game_object.PC(self.width / 2 - 25, self.height * 0.85, 50, 70)
+        slime_0 = game_object.NPC(random.randrange(20, 300), 500, 50, 50)
         slime_0.BASE_SPEED *= level
-        treasure = game_object.GameObject('NPC/Treasure.png', self.width / 2 - 45, 30, 100, 70)
+        treasure = game_object.GameObject(self.width / 2 - 45, 30, 100, 70)
+        treasure.sprite_image('NPC/Treasure.png')
         # Draw harder slimes
         if level > self.MEDIUM_LEVEL:
-            slime_1 = game_object.NPC(
-                'NPC/Slime.png', random.randrange(20, 700), 300, 50, 50)
+            slime_1 = game_object.NPC(random.randrange(20, 700), 300, 50, 50)
             slime_1.BASE_SPEED *= level
         if level > self.HARD_LEVEL:
-            slime_2 = game_object.NPC(
-                'NPC/Slime.png', random.randrange(20, 700), 150, 50, 50)
+            slime_2 = game_object.NPC(random.randrange(20, 700), 150, 50, 50)
             slime_2.BASE_SPEED *= level
             slime_2.move(self.width)
             slime_2.draw(self.game_screen)

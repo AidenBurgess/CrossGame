@@ -3,14 +3,15 @@ import pygame
 
 class GameObject:
 
-    def __init__(self, image_path, x, y, width, height):
-        # Load images and scaleup
-        object_image = pygame.image.load(image_path)
-        self.image = pygame.transform.scale(object_image, (width, height))
+    def __init__(self, x, y, width, height):
         self.x_pos = x
         self.y_pos = y
         self.width = width
         self.height = height
+
+    def sprite_image(self, image_path):
+        object_image = pygame.image.load(image_path)
+        self.image = pygame.transform.scale(object_image, (self.width, self.height))
 
     def draw(self, background):
         background.blit(self.image, (self.x_pos, self.y_pos))
@@ -21,8 +22,10 @@ class NPC(GameObject):
     # True  = right, False = Left
     direction = True
 
-    def __init__(self, image_path, x, y, width, height):
-        super().__init__(image_path, x, y, width, height)
+    def __init__(self, x, y, width, height):
+        super().__init__(x, y, width, height)
+        object_image = pygame.image.load('NPC/Slime.png')
+        self.image = pygame.transform.scale(object_image, (width, height))
 
     def draw(self, background):
         if self.direction:
@@ -45,19 +48,19 @@ class PC(GameObject):
 
     BASE_SPEED = 5
 
-    object_image = pygame.image.load('PC/ZeldaFront.png')
+    object_image = pygame.image.load('PC/LinkFront.png')
     prev_sprite = pygame.transform.scale(object_image, (50, 70))
 
-    def __init__(self, image_path, x, y, width, height):
-        super().__init__(image_path, x, y, width, height)
+    def __init__(self, x, y, width, height):
+        super().__init__(x, y, width, height)
         # Load in all the sprites
-        object_image = pygame.image.load(image_path)
+        object_image = pygame.image.load('PC/LinkBack.png')
         self.fr_image = pygame.transform.scale(object_image, (width, height))
-        object_image = pygame.image.load('PC/ZeldaFront.png')
+        object_image = pygame.image.load('PC/LinkFront.png')
         self.ba_image = pygame.transform.scale(object_image, (width, height))
-        object_image = pygame.image.load('PC/ZeldaLeft.png')
+        object_image = pygame.image.load('PC/LinkLeft.png')
         self.le_image = pygame.transform.scale(object_image, (width, height))
-        object_image = pygame.image.load('PC/ZeldaRight.png')
+        object_image = pygame.image.load('PC/LinkRight.png')
         self.ri_image = pygame.transform.scale(object_image, (width, height))
 
     # Special drawing based on sprite movement
