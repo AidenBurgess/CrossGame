@@ -192,8 +192,7 @@ class Game:
         print('LEVEL: ', level)
 
         # Draw player + first slime+ treasure
-        particle = game_object.GameObject(
-            'particle/Particle1.png', 500, 500, 50, 50)
+        particle = game_object.AnimatedSprite(500, 500, 50, 50, 'particle/Particle', 10, 6)
         count = 1
         player = game_object.PC(self.width / 2 - 25, self.height * 0.85, 50, 70)
         slime_0 = game_object.NPC(random.randrange(20, 300), 500, 50, 50)

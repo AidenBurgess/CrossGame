@@ -111,3 +111,18 @@ class PC(GameObject):
         elif self.x_pos + self.width < other_body.x_pos:
             return False
         return True
+
+
+class AnimatedSprite(GameObject):
+
+    def __init__(self, x, y, width, height, root_image, num_sprites, speed):
+        super().__init__(x, y, width, height)
+        self.counter = 0
+        self.root_image = root_image
+        self.num_sprites = num_sprites
+        self.speed = speed
+        object_image = pygame.image.load(f'{root_image}' + '1' + '.png')
+        self.image = pygame.transform.scale(object_image, (self.width, self.height))
+
+    def next_sprite(self):
+        pass
