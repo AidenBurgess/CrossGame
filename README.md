@@ -1,11 +1,7 @@
 # CrossGame
-Simple game made in python w/ pygame.  
-Cross the road and reach the treasure to win!  
-Controls:  
-Arrow keys to move  
-X to boost  
-Q or Esc to pause/exit    
-Followed tutorial at first, but this version has many more features.  
+<img src="https://user-images.githubusercontent.com/5440199/53463146-fae9fa00-3aaa-11e9-9046-19a5ad1f633a.PNG" width="75%"></img>  
+Simple game made in python w/ pygame.    
+Followed online tutorial at first, but this version has many more features.  
 
 # How to Run
 Download all files as a ZIP.  
@@ -17,7 +13,7 @@ Run Cross_Game.py
 Basics of pygame  
 Animating sprites  
 Collision detection  
-
+<img src="https://user-images.githubusercontent.com/5440199/53463151-fe7d8100-3aaa-11e9-9ad1-5ee171a7ea42.PNG" width="75%"></img>  
 # Added features
 Main menu screen  
 Transparent pause screen  
