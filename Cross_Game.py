@@ -174,7 +174,7 @@ class Game:
             # Display text for losing
             self.game_screen.fill(WHITE)
             message_to_screen_center(
-                self.game_screen, 'You lost...', RED, large_font, 50)
+                self.game_screen, 'You lost...', RED, large_font, 75)
             message_to_screen_center(
                 self.game_screen, 'Press R to Restart', RED, large_font, 200)
             message_to_screen_center(
@@ -222,20 +222,7 @@ class Game:
                     if self.pause():
                         return
             # Determine keypresses to determine dirx and diry
-            dir_x = 0
-            dir_y = 0
-            boost = 1
-            keys = pygame.key.get_pressed()
-            if keys[pygame.K_UP]:
-                dir_y = 1
-            if keys[pygame.K_DOWN]:
-                dir_y = -1
-            if keys[pygame.K_LEFT]:
-                dir_x = -1
-            if keys[pygame.K_RIGHT]:
-                dir_x = 1
-            if keys[pygame.K_x]:
-                boost = 2
+            dir_x, dir_y, boost = self.get_PC_dir()
             # Redraw screen
             self.game_screen.fill(WHITE)
             self.game_screen.blit(self.image, (0, 0))
@@ -301,6 +288,20 @@ class Game:
             self.run_game_loop(1)
         else:
             return
+
+    def get_PC_dir(self, dir_x=0, dir_y=0, boost=1):
+        keys = pygame.key.get_pressed()
+        if keys[pygame.K_UP]:
+            dir_y = 1
+        if keys[pygame.K_DOWN]:
+            dir_y = -1
+        if keys[pygame.K_LEFT]:
+            dir_x = -1
+        if keys[pygame.K_RIGHT]:
+            dir_x = 1
+        if keys[pygame.K_x]:
+            boost = 2
+        return (dir_x, dir_y, boost)
 
     def detect_all_collisions(self, level, player, slime_0, slime_1, slime_2, treasure):
         '''Detect collision between player and (slimes and treasure)'''
