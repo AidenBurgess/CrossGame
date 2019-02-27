@@ -173,12 +173,12 @@ class Game:
                     return True
             # Display text for losing
             self.game_screen.fill(WHITE)
-            message_to_screen_left(
-                self.game_screen, 'You lost...', RED, large_font, 100, 50)
-            message_to_screen_left(
-                self.game_screen, 'Press R to Restart', RED, large_font, 150, 200)
-            message_to_screen_left(
-                self.game_screen, 'Press Q or esc to quit', RED, large_font, 150, 300)
+            message_to_screen_center(
+                self.game_screen, 'You lost...', RED, large_font, 50)
+            message_to_screen_center(
+                self.game_screen, 'Press R to Restart', RED, large_font, 200)
+            message_to_screen_center(
+                self.game_screen, 'Press Q or esc to quit', RED, large_font, 300)
             # Have the loser slime dance around lol
             slime_0.move(self.width)
             slime_0.draw(self.game_screen)
@@ -187,7 +187,6 @@ class Game:
     def run_game_loop(self, level):
         game_over = False
         did_win = True
-        dir_y = dir_x = 0
         boost = 1
 
         print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
